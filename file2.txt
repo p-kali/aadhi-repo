@@ -1,0 +1,39 @@
+import com.amazonaws.services.lambda.runtime.Context;
+import com.amazonaws.services.lambda.runtime.RequestHandler;
+import java.util.HashMap;
+import java.util.Map;
+
+public class LambdaHandler implements RequestHandler<Map<String, Object>, Map<String, Object>> {
+    // This LambdaHandler returns different responses based on the "api" key in the event map.
+    // If "api" is "employee", it returns employee info.
+    // If "api" is "location", it returns location info.
+    // Both require an "employeeId" key in the event map.
+
+    private Map<String, Object> getEmployeeInfo(int employeeId) {
+        Map<String, Object> employeeInfo = new HashMap<>();
+        employeeInfo.put("id", employeeId);
+        employeeInfo.put("name", "John Doe");
+        employeeInfo.put("department", "Engineering");
+        return employeeInfo;
+    }
+
+    private Map<String, Object> getLocationInfo(int employeeId) {
+        Map<String, Object> locationInfo = new HashMap<>();
+        locationInfo.put("employeeId", employeeId);
+        locationInfo.put("location", "New York");
+        locationInfo.put("office", "HQ-12A");
+        return locationInfo;
+    }
+    @Override
+    public Map<String, Object> handleRequest(Map<String, Object> event, Context context) {
+        Map<String, Object> employeeInfo = new HashMap<>();
+        employeeInfo.put("id", 101);
+        employeeInfo.put("name", "John Doe");
+        employeeInfo.put("department", "Engineering");
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("statusCode", 200);
+        response.put("body", employeeInfo);
+        return response;
+    }
+}
